@@ -11,8 +11,7 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
         dob,
         nic,
         gender,
-        password,
-        role
+   
     } = req.body;
     if (
         !firstName ||
@@ -22,8 +21,8 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
         !dob ||
         !nic ||
         !gender ||
-        !password ||
-        !role
+        !password 
+     
     ) {
         return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
@@ -40,14 +39,14 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
         nic,
         gender,
         password,
-        role
+       role: "Patient",
     });
     generateJsonWebToken(user, "User Registered!", 200, res);
 
 });
 export const login = catchAsyncErrors(async (req, res, next) => {
-    const { email, password, confirmPassword, role } = req.body;
-    if (!email || !password || !confirmPassword || !role) {
+    const { email, password, confirmPassword} = req.body;
+    if (!email || !password || !confirmPassword   || !role  ) {
         return next(new ErrorHandler("Please Provide All Details!", 400));
     }
     if (password !== confirmPassword) {
@@ -61,9 +60,10 @@ export const login = catchAsyncErrors(async (req, res, next) => {
     if (!isPasswordMatch) {
         return next(new ErrorHandler("Invalid Email Or Password!", 400));
     }
-    if (role != user.role) {
+   if (role != user.role) {
         return next(new ErrorHandler("User With This Role Not Found!", 400));
     }
+        
 
     generateJsonWebToken(user, "User Logged In Successfully!", 200, res);
 
